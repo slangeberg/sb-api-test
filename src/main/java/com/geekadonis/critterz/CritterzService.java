@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestClient;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
@@ -37,7 +36,7 @@ public class CritterzService {
         log.info(critters.size() + " critters created");
     }
 
-    Iterable<Critter> getAll() {
+    Iterable<Critter> findAll() {
         final var all = critterzRepository.findAll();
         log.info("getAll(): {}", all.spliterator().estimateSize());
         return all;
@@ -74,7 +73,7 @@ public class CritterzService {
         return result;
     }
 
-    private String getUriOfCritterApi(CritterType critterType, int width, int height) {
+    String getUriOfCritterApi(CritterType critterType, int width, int height) {
         var uri = switch (critterType) {
             case BEAR -> "https://placebear.com";
             case DOG -> "https://place.dog";

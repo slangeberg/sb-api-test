@@ -35,7 +35,7 @@ public class CritterzController {
 
     @GetMapping
     public ResponseEntity getAllCritterz() {
-        var all = critterzService.getAll();
+        var all = critterzService.findAll();
         var response = ResponseEntity.ok().body(all);
         return response;
     }
