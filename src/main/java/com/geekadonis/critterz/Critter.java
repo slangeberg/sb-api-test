@@ -1,17 +1,27 @@
 package com.geekadonis.critterz;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
-import java.util.Date;
-
-/**
- * Let's start the day right
- */
-@Data
 @Entity
+@Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString(onlyExplicitlyIncluded = true)
 public class Critter {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @EqualsAndHashCode.Include
+    @ToString.Include
     private Long id;
+
+    private CritterType critterType;
+
+    @JsonIgnore
+    @Lob
+    private byte[] imageData;
 }
