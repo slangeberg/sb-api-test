@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestClient;
 
 import java.util.ArrayList;
@@ -29,9 +30,9 @@ public class CritterzService {
 
     @Transactional
     public void fetchImagesAndCreateCritters(CritterType critterType, int count, int width, int height) {
-        List<Critter> critters = new ArrayList<>();
-        IntStream.rangeClosed(1, count)
-            .forEach(value -> critters.add(fetchImageAndCreateCritter(critterType, width, height)));
+        List<Critter> critters = IntStream.rangeClosed(1, count)
+            .mapToObj(value -> fetchImageAndCreateCritter(critterType, width, height))
+            .toList();
         critterzRepository.saveAll(critters);
         log.info(critters.size() + " critters created");
     }
@@ -50,11 +51,17 @@ public class CritterzService {
     ////
 
     private Critter fetchImageAndCreateCritter(CritterType critterType, int width, int height) {
-        ResponseEntity<byte[]> response = this.restClient
-            .get()
-            .uri(getUriOfCritterApi(critterType), width, height)
-            .retrieve()
-            .toEntity(byte[].class);
+        ResponseEntity<byte[]> response = null;
+        var uri = getUriOfCritterApi(critterType);
+        try {
+            response = this.restClient
+                .get()
+                .uri(uri, width, height)
+                .retrieve()
+                .toEntity(byte[].class);
+        } catch (HttpServerErrorException e) {
+            throw new RuntimeException("Failed to fetch image at: " + uri + ", with error: " + e.getMessage());
+        }
 
         if (!HttpStatus.OK.equals(response.getStatusCode())) {
             throw new RuntimeException("Expected status OK, but got: " +  response.getStatusCode());
