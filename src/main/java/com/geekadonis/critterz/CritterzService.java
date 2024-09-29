@@ -52,11 +52,11 @@ public class CritterzService {
 
     private Critter fetchImageAndCreateCritter(CritterType critterType, int width, int height) {
         ResponseEntity<byte[]> response = null;
-        var uri = getUriOfCritterApi(critterType);
+        var uri = getUriOfCritterApi(critterType, width, height);
         try {
             response = this.restClient
                 .get()
-                .uri(uri, width, height)
+                .uri(uri)
                 .retrieve()
                 .toEntity(byte[].class);
         } catch (HttpServerErrorException e) {
@@ -74,11 +74,13 @@ public class CritterzService {
         return result;
     }
 
-    private String getUriOfCritterApi(CritterType critterType) {
-        return switch (critterType) {
-            case BEAR -> "https://placebear.com/g/{width}/{height}";
-            case DOG -> "https://place.dog/{width}/{height}";
-            case KITTEN -> "https://placekitten.com/{width}/{height}";
+    private String getUriOfCritterApi(CritterType critterType, int width, int height) {
+        var uri = switch (critterType) {
+            case BEAR -> "https://placebear.com";
+            case DOG -> "https://place.dog";
+            case KITTEN -> "https://placekitten.com";
         };
+        uri += "/" + width + "/" + height;
+        return uri;
     }
 }
