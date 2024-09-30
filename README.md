@@ -37,11 +37,13 @@ curl --location --request POST 'http://localhost:8080/api/critterz?critterType=B
 ### Future improvements
 - **Externalize the remote api configurations**. 
   - Currently, we have a few hard-coded endpoints to match 'critterType'. Those could easily be configured by external file or db with type -> uri mappings.
-- **Standard CRUD api.** 
+- **Standard CRUD api** 
   - Would be simple to add `/api/critterz/{ID}` and similar endpoints. 
   - Also seems like if we really want 'last' entry, we'd want to query by type, like `/api/critterz/last?findByCritterType=BEAR` 
 - **Security.** 
   - Right now these apis are wide open. Would be interesting to see if there is any evolution in Spring Security in Boot 3 that I'm missing out on.
+- **Persistent DB**
+  - Currently just using H2 in memory, but would be simple to add Mysql or other DB to our docker setup. 
 - **OpenAPI.** 
   - No reason not to publish swagger api docs for convenience.
 - **Modular code structure.** 
