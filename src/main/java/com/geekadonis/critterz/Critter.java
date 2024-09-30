@@ -14,7 +14,7 @@ import lombok.*;
 @ToString(onlyExplicitlyIncluded = true)
 public class Critter {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     @EqualsAndHashCode.Include
     @ToString.Include
     private Long id;

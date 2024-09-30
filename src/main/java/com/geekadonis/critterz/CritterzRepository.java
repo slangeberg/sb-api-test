@@ -9,5 +9,7 @@ import java.util.Optional;
  */
 public interface CritterzRepository extends CrudRepository<Critter, Long> {
     Optional<Critter> findFirstByOrderByIdDesc();
+
+    // TODO: could be used to filter down by type
     Optional<Critter> findFirstByCritterTypeOrderByIdDesc(CritterType critterType);
 }
