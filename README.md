@@ -40,6 +40,8 @@ curl --location --request POST 'http://localhost:8080/api/critterz?critterType=B
 - **Standard CRUD api** 
   - Would be simple to add `/api/critterz/{ID}` and similar endpoints. 
   - Also seems like if we really want 'last' entry, we'd want to query by type, like `/api/critterz/last?findByCritterType=BEAR` 
+- **DTO over API**
+  - Currently returning straight entities as JSON format, so would be good idea to add DTO mapping layer to controller(s)
 - **Security.** 
   - Right now these apis are wide open. Would be interesting to see if there is any evolution in Spring Security in Boot 3 that I'm missing out on.
 - **Persistent DB**
